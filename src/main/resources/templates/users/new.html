@@ -23,11 +23,19 @@
     <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</div>
     <br>
     <label for="roles">Choose roles: </label>
-    <select id="roles" name="roles" th:field="*{roles}">
-        <option th:each="role : ${all_roles}" th:value="${role}" th:text="${role.getName()}"></option>
+    <select id="roles" name="roles" th:field="*{roles}" multiple="multiple">
+        <option th:each="role : ${all_roles}" th:value="${role.getId()}" th:text="${role.getName()}"></option>
     </select>
     <br>
     <input type="submit" value="Create">
 </form>
+
+<br>
+<br>
+
+<a href="/logout">
+    <button type="button">Logout</button>
+</a>
+
 </body>
 </html>

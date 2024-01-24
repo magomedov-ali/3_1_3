@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.User;
+import ru.kata.spring.boot_security.demo.services.RegistrationService;
 import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
@@ -17,11 +18,13 @@ public class AdminController {
 
     private final UserService userService;
     private final RoleService roleService;
+    private final RegistrationService registrationService;
 
     @Autowired
-    public AdminController(UserService userService, RoleService roleService) {
+    public AdminController(UserService userService, RoleService roleService, RegistrationService registrationService) {
         this.userService = userService;
         this.roleService = roleService;
+        this.registrationService = registrationService;
     }
 
     @GetMapping()
@@ -37,11 +40,12 @@ public class AdminController {
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
+    public String create(@ModelAttribute("user") @Valid User user, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("all_roles", roleService.findAll());
             return "users/new";
         }
-        userService.save(user);
+        registrationService.register(user);
         return "redirect:/admin";
     }
 
@@ -53,11 +57,12 @@ public class AdminController {
     }
 
     @PatchMapping("/update")
-    public String update(@ModelAttribute("user") @Valid User user, BindingResult bindingResult, @RequestParam("id") int id) {
+    public String update(@ModelAttribute("user") @Valid User user, BindingResult bindingResult, @RequestParam("id") int id, Model model) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("all_roles", roleService.findAll());
             return "users/edit";
         }
-        userService.update(id, user);
+        registrationService.update(id, user);
         return "redirect:/admin";
     }
 
