@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.models.User;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional(readOnly = true)
@@ -14,6 +15,8 @@ public interface UserService extends UserDetailsService {
     User findByUsername(String username);
 
     List<User> findAll();
+
+    Set<User> findAllFetchRoles();
 
     User findOne(int id);
 

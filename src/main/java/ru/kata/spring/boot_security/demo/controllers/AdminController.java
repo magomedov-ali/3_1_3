@@ -29,7 +29,7 @@ public class AdminController {
 
     @GetMapping()
     public String index(Model model) {
-        model.addAttribute("users", userService.findAll());
+        model.addAttribute("users", userService.findAllFetchRoles());
         return "users/index";
     }
 
